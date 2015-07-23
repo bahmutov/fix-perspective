@@ -26,5 +26,8 @@
     "check-more-types": "1.8.2",
     "lazy-ass": "0.5.8",
     "mocha": "2.2.5"
+  },
+  "dependencies": {
+    "numeric": "1.2.6"
   }
 }
