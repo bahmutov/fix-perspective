@@ -1,0 +1,25 @@
+{
+  "name": "fix-perspective",
+  "version": "1.0.0",
+  "description": "Computes and applies perspective correction given 4 corners",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bahmutov/fix-perspective.git"
+  },
+  "keywords": [
+    "perspective",
+    "correction",
+    "projection",
+    "matrix"
+  ],
+  "author": "Gleb Bahmutov <gleb.bahmutov@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/bahmutov/fix-perspective/issues"
+  },
+  "homepage": "https://github.com/bahmutov/fix-perspective"
+}
