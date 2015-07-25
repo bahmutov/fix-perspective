@@ -159,16 +159,28 @@ describe('calculate transform', function () {
       y: 200
     }];
 
-    var transform = calculate(from, to);
+    var topLeft = from[0];
+    var fromTopLeft = from.map(function (p) {
+      return {
+        x: p.x - topLeft.x,
+        y: p.y - topLeft.y,
+      };
+    });
+
+    var transform = calculate(fromTopLeft, to);
     la(check.fn(transform), 'found transform fn', transform);
+    console.log(transform.H);
 
     from.forEach(function (corner, k) {
-      var transformed = transform(corner.x, corner.y);
+      var toTopLeft = {
+        x: corner.x - topLeft.x,
+        y: corner.y - topLeft.y
+      };
+      var transformed = transform(toTopLeft.x, toTopLeft.y);
       var toCorner = to[k];
       la(check.numberEqual(transformed.x, toCorner.x));
       la(check.numberEqual(transformed.y, toCorner.y));
     });
 
-    console.log(transform.H);
   });
 });
