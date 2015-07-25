@@ -127,4 +127,48 @@ describe('calculate transform', function () {
       la(check.numberEqual(transformed.y, toCorner.y));
     });
   });
+
+  it('calculates test image', function () {
+    // test poster used in README
+    // https://github.com/bahmutov/fix-perspective-element
+    var from = [{
+      x: 470,
+      y: 175,
+    }, {
+      x: 555,
+      y: 130
+    }, {
+      x: 560,
+      y: 345
+    }, {
+      x: 473,
+      y: 345
+    }];
+
+    var to = [{
+      x: 0,
+      y: 0,
+    }, {
+      x: 100,
+      y: 0
+    }, {
+      x: 100,
+      y: 200
+    }, {
+      x: 0,
+      y: 200
+    }];
+
+    var transform = calculate(from, to);
+    la(check.fn(transform), 'found transform fn', transform);
+
+    from.forEach(function (corner, k) {
+      var transformed = transform(corner.x, corner.y);
+      var toCorner = to[k];
+      la(check.numberEqual(transformed.x, toCorner.x));
+      la(check.numberEqual(transformed.y, toCorner.y));
+    });
+
+    console.log(transform.H);
+  });
 });
