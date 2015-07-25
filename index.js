@@ -1,5 +1,1 @@
-var fixPerspective = {
-  calculateTransform: require('./src/calculate-transform')
-};
-
-module.exports = fixPerspective;
+module.exports = require('./src/calculate-transform');

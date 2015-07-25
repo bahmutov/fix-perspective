@@ -4,7 +4,8 @@
   "description": "Computes and applies perspective correction given 4 corners",
   "main": "index.js",
   "scripts": {
-    "test": "mocha -R spec src/*-spec.js"
+    "test": "mocha -R spec src/*-spec.js",
+    "watch": "npm test -- --watch"
   },
   "repository": {
     "type": "git",
@@ -25,9 +26,14 @@
   "devDependencies": {
     "check-more-types": "1.8.2",
     "lazy-ass": "0.5.8",
-    "mocha": "2.2.5"
+    "mocha": "2.2.5",
+    "pre-git": "0.6.2"
   },
   "dependencies": {
     "numeric": "1.2.6"
-  }
+  },
+  "pre-commit": [
+    "npm test",
+    "npm version"
+  ]
 }

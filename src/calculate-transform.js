@@ -4,6 +4,15 @@ if (typeof numeric !== 'object') {
   throw new Error('missing numeric library');
 }
 
+function applyTransform(tr, x, y) {
+  var applied = numeric.dot(tr, [x, y, 0, 1]);
+  var w = applied[3];
+  return {
+    x: applied[0] / w,
+    y: applied[1] / w
+  };
+};
+
 function calculateTransform(from, to) {
   var A, H, b, h, i, k_i, lhs, rhs, _i, _j, _k, _ref;
   console.assert((from.length === (_ref = to.length) && _ref === 4));
@@ -31,4 +40,12 @@ function calculateTransform(from, to) {
   return H;
 }
 
-module.exports = calculateTransform;
+function calculateTransformation(from, to) {
+  // TODO validate inputs
+  var H = calculateTransform(from, to);
+  var transformation = applyTransform.bind(null, H);
+  transformation.H = H;
+  return transformation;
+}
+
+module.exports = calculateTransformation;

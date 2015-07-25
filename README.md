@@ -23,6 +23,33 @@ Based on the following sources:
 [fix-perspective-devdependencies-image]: https://david-dm.org/bahmutov/fix-perspective/dev-status.png
 [fix-perspective-devdependencies-url]: https://david-dm.org/bahmutov/fix-perspective#info=devDependencies
 
+Given 4 starting points and 4 end points calculates transformation function (and matrix)
+that transforms any starting point. Usually used to remove perspective distortion.
+
+```js
+// from, to are arrays with 4 points each (x, y)
+var from = [{ 
+    x: 100,
+    y: 20
+}, {
+    x: 200,
+    y: 50
+}, ...];
+var to = [{ 
+    x: 20,
+    y: 0
+}, {
+    x: 100,
+    y: 0
+}, ...];
+var fixPerspective = require('fix-perspective');
+var transformation = fixPerspective(from, to);
+// any point in the original (FROM) coordinate system
+var out = transformation(100, 60);
+// out = { x: ..., y: ... };
+// the transformation matrix (4x4) is available as transformation.H
+```
+
 ### Small print
 
 Author: Gleb Bahmutov &copy; 2015

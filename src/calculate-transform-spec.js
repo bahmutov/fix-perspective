@@ -2,15 +2,6 @@ require('lazy-ass');
 var check = require('check-more-types');
 var calculate = require('./calculate-transform');
 
-var applyTransform = function applyTransform(tr, x, y) {
-  var applied = numeric.dot(tr, [x, y, 0, 1]);
-  var w = applied[3];
-  return {
-    x: applied[0] / w,
-    y: applied[1] / w
-  };
-};
-
 function has4floats(arr) {
   return check.array(arr) &&
     arr.length === 4 &&
@@ -60,13 +51,14 @@ describe('calculate transform', function () {
       x: 0,
       y: 50
     }];
-    var tr = calculate(corners, corners);
+    var transform = calculate(corners, corners);
+    la(check.fn(transform), 'expected transform function');
+    var tr = transform.H;
     la(check.m4(tr), 'found transform matrix', tr);
     la(check.identity(tr), 'transform should be identity', tr);
 
-    var apply = applyTransform.bind(null, tr);
     corners.forEach(function (corner) {
-      var transformed = apply(corner.x, corner.y);
+      var transformed = transform(corner.x, corner.y);
       la(check.numberEqual(transformed.x, corner.x));
       la(check.numberEqual(transformed.y, corner.y));
     });
@@ -86,15 +78,53 @@ describe('calculate transform', function () {
       x: 0,
       y: 50
     }];
-    var tr = calculate(corners, corners);
-    la(check.m4(tr), 'found transform matrix', tr);
-    la(check.identity(tr), 'transform should be identity', tr);
+    var transform = calculate(corners, corners);
+    la(check.fn(transform), 'found transform fn', transform);
 
-    var apply = applyTransform.bind(null, tr);
     corners.forEach(function (corner) {
-      var transformed = apply(corner.x, corner.y);
+      var transformed = transform(corner.x, corner.y);
       la(check.numberEqual(transformed.x, corner.x));
       la(check.numberEqual(transformed.y, corner.y));
+    });
+  });
+
+  it('calculates scale', function () {
+    var from = [{
+      x: 0,
+      y: 0,
+    }, {
+      x: 100,
+      y: 0
+    }, {
+      x: 100,
+      y: 50
+    }, {
+      x: 0,
+      y: 50
+    }];
+
+    var to = [{
+      x: 0,
+      y: 0,
+    }, {
+      x: 200,
+      y: 0
+    }, {
+      x: 200,
+      y: 50
+    }, {
+      x: 0,
+      y: 50
+    }];
+
+    var transform = calculate(from, to);
+    la(check.fn(transform), 'found transform fn', transform);
+
+    from.forEach(function (corner, k) {
+      var transformed = transform(corner.x, corner.y);
+      var toCorner = to[k];
+      la(check.numberEqual(transformed.x, toCorner.x));
+      la(check.numberEqual(transformed.y, toCorner.y));
     });
   });
 });
