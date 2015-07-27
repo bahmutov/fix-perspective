@@ -128,20 +128,58 @@ describe('calculate transform', function () {
     });
   });
 
+  it('computes identity from example transform', function () {
+    // example from code pen
+    // http://codepen.io/fta/pen/JoGybG?editors=101
+    var from = [{
+      x: 0,
+      y: 0
+    }, {
+      x: 0,
+      y: 400
+    }, {
+      x: 640,
+      y: 0
+    }, {
+      x: 640,
+      y: 400
+    }];
+    var to = [{
+      x: 0,
+      y: 0
+    }, {
+      x: 0,
+      y: 400
+    }, {
+      x: 640,
+      y: 0
+    }, {
+      x: 640,
+      y: 400
+    }];
+
+    var transform = calculate(from, to);
+    la(check.fn(transform), 'found transform fn', transform);
+    console.log(transform.H);
+    la(check.identity(transform.H), 'expected identity transform', transform.H);
+  });
+
   it('calculates test image', function () {
     // test poster used in README
     // https://github.com/bahmutov/fix-perspective-element
+    // need corners in the order TL, BL, TR, BR
+    // input image is 800x600
     var from = [{
       x: 470,
       y: 175,
+    }, {
+      x: 473,
+      y: 345
     }, {
       x: 555,
       y: 130
     }, {
       x: 560,
-      y: 345
-    }, {
-      x: 473,
       y: 345
     }];
 
@@ -149,34 +187,22 @@ describe('calculate transform', function () {
       x: 0,
       y: 0,
     }, {
-      x: 100,
+      x: 0,
+      y: 600
+    }, {
+      x: 800,
       y: 0
     }, {
-      x: 100,
-      y: 200
-    }, {
-      x: 0,
-      y: 200
+      x: 800,
+      y: 600
     }];
 
-    var topLeft = from[0];
-    var fromTopLeft = from.map(function (p) {
-      return {
-        x: p.x - topLeft.x,
-        y: p.y - topLeft.y,
-      };
-    });
-
-    var transform = calculate(fromTopLeft, to);
+    var transform = calculate(from, to);
     la(check.fn(transform), 'found transform fn', transform);
     console.log(transform.H);
 
     from.forEach(function (corner, k) {
-      var toTopLeft = {
-        x: corner.x - topLeft.x,
-        y: corner.y - topLeft.y
-      };
-      var transformed = transform(toTopLeft.x, toTopLeft.y);
+      var transformed = transform(corner.x, corner.y);
       var toCorner = to[k];
       la(check.numberEqual(transformed.x, toCorner.x));
       la(check.numberEqual(transformed.y, toCorner.y));
