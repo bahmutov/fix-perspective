@@ -128,7 +128,7 @@ describe('calculate transform', function () {
     });
   });
 
-  it.only('computes identity from example transform (images/video-still.jpg)', function () {
+  it('computes identity from example transform (images/video-still.jpg)', function () {
     // example from code pen
     // http://codepen.io/fta/pen/JoGybG?editors=101
     var from = [{
@@ -156,6 +156,42 @@ describe('calculate transform', function () {
     }, {
       x: 640,
       y: 400
+    }];
+
+    var transform = calculate(from, to);
+    la(check.fn(transform), 'found transform fn', transform);
+    console.log(transform.H);
+    // la(check.identity(transform.H), 'expected identity transform', transform.H);
+  });
+
+  it.only('images/video-still.jpg to different dimensions', function () {
+    // example from code pen
+    // http://codepen.io/fta/pen/JoGybG?editors=101
+    var from = [{
+      x: 29,
+      y: 48
+    }, {
+      x: 23,
+      y: 212
+    }, {
+      x: 298,
+      y: 76
+    }, {
+      x: 292,
+      y: 215
+    }];
+    var to = [{
+      x: 0,
+      y: 0
+    }, {
+      x: 0,
+      y: 200
+    }, {
+      x: 300,
+      y: 0
+    }, {
+      x: 300,
+      y: 200
     }];
 
     var transform = calculate(from, to);
